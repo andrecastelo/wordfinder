@@ -41,6 +41,7 @@ export const Grid: React.FC<GridProps> = ({ characters }) => {
           dragging={dragging}
           coordinates={indexToCoordinates(index)}
           onSelect={handleOnSelect}
+          key={index}
         >
           {letter}
         </GridItem>
