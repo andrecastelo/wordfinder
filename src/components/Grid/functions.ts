@@ -67,5 +67,5 @@ export const getLine = (start: Coordinates, coord: Coordinates): Coordinates[] =
     return getDiagonal(start, coord, lengthX);
   }
 
-  return [];
+  return [start];
 }

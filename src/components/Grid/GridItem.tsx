@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import classnames from 'classnames';
 import { StyledGridItem } from './styles';
 import { Coordinates } from './functions';
@@ -8,6 +7,7 @@ type GridItemProps = {
   setDragging: React.Dispatch<React.SetStateAction<boolean>>,
   coordinates: Coordinates,
   onSelect: (c: Coordinates) => void,
+  selected: boolean,
 }
 
 export const GridItem: React.FC<GridItemProps> = ({
@@ -16,14 +16,12 @@ export const GridItem: React.FC<GridItemProps> = ({
   coordinates,
   children,
   onSelect,
+  selected,
 }) => {
-  const [selected, setSelected] = useState<boolean>(false);
-
   return (
     <StyledGridItem
       onMouseDown={() => {
         setDragging(true);
-        setSelected(true);
         onSelect(coordinates);
       }}
       onMouseUp={() => {
@@ -31,7 +29,6 @@ export const GridItem: React.FC<GridItemProps> = ({
       }}
       onMouseEnter={() => {
         if (dragging) {
-          setSelected(true);
           onSelect(coordinates);
         }
       }}

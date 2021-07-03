@@ -80,4 +80,12 @@ it('in a diagonal, from top right to bottom left and reverse', () => {
     expect(result).toEqual([p(3, 0), p(2, 1), p(1, 2)])
     expect(reverseResult).toEqual([p(1, 2), p(2, 1), p(3, 0)]);
   });
+
+  it('but return only the starting point if no path can be found', () => {
+    const a = p(2, 2),
+          b = p(7, 0);
+
+    expect(getLine(a, b)).toEqual([ a ]);
+    expect(getLine(b, a)).toEqual([ b ]);
+  })
 });
