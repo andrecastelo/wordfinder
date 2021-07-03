@@ -10,6 +10,8 @@ export const indexToCoordinates = (index: number): Coordinates => {
   }
 };
 
+export const coordinatesToIndex = ({ x, y }: Coordinates): number => x * 8 + y;
+
 const distance = (start: Coordinates, end: Coordinates): number[] => {
   const diffX = Math.abs(end.x - start.x) + 1,
         diffY = Math.abs(end.y - start.y) + 1;
