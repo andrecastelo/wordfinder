@@ -21,8 +21,6 @@ export const Grid: React.FC<GridProps> = ({ characters }) => {
     }
   }, [dragging]);
 
-  console.log(selected);
-
   const handleOnSelect = (coordinates: Coordinates): void => {
     if (!start) {
       setStart(coordinates);
