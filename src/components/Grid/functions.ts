@@ -6,14 +6,25 @@ import { Coordinates, TargetWord } from '../../types';
  * coordinates to pass to the GridItem component.
  *
  * @param index
+ * @param gridSize
  * @returns
  */
-export const indexToCoordinates = (index: number): Coordinates => {
+export const indexToCoordinates = (index: number, gridSize: number): Coordinates => {
   return {
-    y: Math.floor(index / 8),
-    x: index % 8,
+    y: Math.floor(index / gridSize),
+    x: index % gridSize,
   }
 };
+
+/**
+ * This is basically the inverse of indexToCoordinates().
+ *
+ * @param param0
+ * @returns
+ */
+export const coordinatesToIndex = ({ x, y }: Coordinates, gridSize: number): number => {
+  return x * gridSize + y;
+}
 
 /**
  * The location string we get from the data.json file is in a list of x and y
@@ -36,14 +47,6 @@ export const parseWordLocations = (location: string): Coordinates[] => {
     return list;
   }, []);
 };
-
-/**
- * This is basically the inverse of indexToCoordinates().
- *
- * @param param0
- * @returns
- */
-export const coordinatesToIndex = ({ x, y }: Coordinates): number => x * 8 + y;
 
 /**
  * Returns an array of distances. First index is distance in the X axis,

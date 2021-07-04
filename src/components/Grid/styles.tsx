@@ -1,3 +1,4 @@
+
 import styled from '@emotion/styled';
 
 const Sizes = {
@@ -6,15 +7,19 @@ const Sizes = {
   Font: 24,
 };
 
-const maxWidth = (Sizes.Item * 8) + (Sizes.Margin * 7);
+const maxWidth = (gridSize: number) => (Sizes.Item * gridSize) + (Sizes.Margin * (gridSize - 1));
 
-export const StyledGrid = styled.div`
+type StyledGridProps = {
+  size: number;
+}
+
+export const StyledGrid = styled.div<StyledGridProps>`
   display: grid;
   margin: 0 auto;
-  grid-template-columns: repeat(8, ${Sizes.Item}px);
-  grid-template-rows: repeat(8, ${Sizes.Item}px);
+  grid-template-columns: ${props => `repeat(${props.size}, ${Sizes.Item}px)`};
+  grid-template-rows: ${props => `repeat(${props.size}, ${Sizes.Item}px)`};
   grid-gap: ${Sizes.Margin}px;
-  max-width: ${maxWidth}px;
+  max-width: ${props => maxWidth(props.size)}px;
   user-select: none;
 `;
 

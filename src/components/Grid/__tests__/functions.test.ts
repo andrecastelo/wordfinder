@@ -11,17 +11,17 @@ import { TargetWord } from '../../../types';
 const p = (x: number, y: number) => ({ x, y });
 
 describe('translate index to points', () => {
-  expect(indexToCoordinates(63)).toEqual({ x: 7, y: 7 });
-  expect(indexToCoordinates(0)).toEqual({ x: 0, y: 0 });
-  expect(indexToCoordinates(7)).toEqual({ x: 7, y: 0 });
-  expect(indexToCoordinates(56)).toEqual({ x: 0, y: 7 });
+  expect(indexToCoordinates(63, 8)).toEqual({ x: 7, y: 7 });
+  expect(indexToCoordinates(0, 8)).toEqual({ x: 0, y: 0 });
+  expect(indexToCoordinates(7, 8)).toEqual({ x: 7, y: 0 });
+  expect(indexToCoordinates(56, 8)).toEqual({ x: 0, y: 7 });
 });
 
 describe('translate points to indexes', () => {
-  expect(coordinatesToIndex({ x: 0, y: 0 })).toEqual(0);
-  expect(coordinatesToIndex({ x: 0, y: 7 })).toEqual(7);
-  expect(coordinatesToIndex({ x: 7, y: 0 })).toEqual(56);
-  expect(coordinatesToIndex({ x: 7, y: 7 })).toEqual(63);
+  expect(coordinatesToIndex({ x: 0, y: 0 }, 8)).toEqual(0);
+  expect(coordinatesToIndex({ x: 0, y: 7 }, 8)).toEqual(7);
+  expect(coordinatesToIndex({ x: 7, y: 0 }, 8)).toEqual(56);
+  expect(coordinatesToIndex({ x: 7, y: 7 }, 8)).toEqual(63);
 });
 
 describe('get a valid line between two points', () => {

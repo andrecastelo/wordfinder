@@ -10,12 +10,13 @@ import {
 import { Coordinates, TargetWord } from '../../types';
 
 type GridProps = {
-  characters: string[],
+  characters: string[][],
   targetWords: TargetWord[],
   targetLanguage: string,
+  onSuccess: () => void,
 };
 
-export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
+export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [start, setStart] = useState<Coordinates | null>(null);
   const [selected, setSelected] = useState<Coordinates[]>([]);
@@ -23,6 +24,7 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
   const [foundWords, setFoundWords] = useState<string[]>([]);
 
   const words = targetWords.map(target => target.word);
+  const gridSize = characters[0].length;
 
   const hasCoordinate = (c: Coordinates, seq: Coordinates[]) =>
     seq.some(({ x, y }) => x === c.x && y === c.y);
@@ -43,8 +45,17 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
       const sequenceMatch: TargetWord | null = getSequenceMatch(selected, targetWords);
 
       if (sequenceMatch) {
-        setFoundWords([ ...foundWords, sequenceMatch.word]);
+        const totalWordsFound = [ ...foundWords, sequenceMatch.word];
+        setFoundWords(totalWordsFound);
         setHighlighted(highlighted.concat(sequenceMatch.location));
+
+        if (totalWordsFound.length === targetWords.length) {
+          setTimeout(() => {
+            setFoundWords([]);
+            setHighlighted([]);
+            onSuccess();
+          }, 1000)
+        }
       }
 
       setSelected([]);
@@ -53,7 +64,7 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
     if (!dragging && selected.length > 0) {
       handleOnDragStop();
     }
-  }, [dragging, selected, targetWords, foundWords, highlighted]);
+  }, [dragging, selected, targetWords, foundWords, highlighted, onSuccess]);
 
   return (
     <div>
@@ -65,9 +76,9 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
           <Word key={word} value={word} found={foundWords.includes(word)}/>
         )}
       </p>
-      <StyledGrid onMouseLeave={() => setDragging(false)}>
-        {characters.map((letter, index) => {
-          const coordinates = indexToCoordinates(index);
+      <StyledGrid onMouseLeave={() => setDragging(false)} size={gridSize}>
+        {characters.flat().map((letter, index) => {
+          const coordinates = indexToCoordinates(index, gridSize);
 
           return (
             <GridItem
