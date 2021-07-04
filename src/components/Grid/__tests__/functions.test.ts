@@ -1,4 +1,4 @@
-import { coordinatesToIndex, getLine, indexToCoordinates } from '../functions';
+import { coordinatesToIndex, getLine, indexToCoordinates, parseWordLocations } from '../functions';
 
 const p = (x: number, y: number) => ({ x, y });
 
@@ -102,4 +102,11 @@ it('in a diagonal, from top right to bottom left and reverse', () => {
     expect(getLine(a, b)).toEqual([ a ]);
     expect(getLine(b, a)).toEqual([ b ]);
   })
+});
+
+describe('can properly parse a location string', () => {
+  const locationString = '6,1,6,2,6,3,6,4',
+        expected = [ p(6,1), p(6,2), p(6,3), p(6,4) ];
+
+  expect(parseWordLocations(locationString)).toEqual(expected);
 });

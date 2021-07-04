@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import { GridItem } from './GridItem';
 import { StyledGrid } from './styles';
+import { Word } from './Word';
 import { indexToCoordinates, getLine, Coordinates } from './functions';
 
 type GridProps = {
   characters: string[],
+  targetWords: string[],
+  targetLocations: Coordinates[][],
+  targetLanguage: string,
+  words: string[],
 };
 
-export const Grid: React.FC<GridProps> = ({ characters }) => {
+export const Grid: React.FC<GridProps> = ({ characters, words }) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [start, setStart] = useState<Coordinates | null>(null);
   const [selected, setSelected] = useState<Coordinates[]>([]);
@@ -31,23 +36,29 @@ export const Grid: React.FC<GridProps> = ({ characters }) => {
   }
 
   return (
-    <StyledGrid>
-      {characters.map((letter, index) => {
-        const coordinates = indexToCoordinates(index);
+    <div>
+      <p>
+        You need to find the <span>spanish</span> translation for the following words:
+      </p>
+      <p className="tw-my-2">{words.map(word => <Word key={word} value={word} found={false}/>)}</p>
+      <StyledGrid>
+        {characters.map((letter, index) => {
+          const coordinates = indexToCoordinates(index);
 
-        return (
-          <GridItem
-            setDragging={setDragging}
-            dragging={dragging}
-            coordinates={coordinates}
-            onSelect={handleOnSelect}
-            selected={isCoordinateSelected(coordinates)}
-            key={index}
-          >
-            {letter}
-          </GridItem>
-        )
-      })}
-    </StyledGrid>
+          return (
+            <GridItem
+              setDragging={setDragging}
+              dragging={dragging}
+              coordinates={coordinates}
+              onSelect={handleOnSelect}
+              selected={isCoordinateSelected(coordinates)}
+              key={index}
+            >
+              {letter}
+            </GridItem>
+          )
+        })}
+      </StyledGrid>
+    </div>
   );
 };

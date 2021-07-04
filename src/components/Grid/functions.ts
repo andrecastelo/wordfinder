@@ -10,6 +10,20 @@ export const indexToCoordinates = (index: number): Coordinates => {
   }
 };
 
+export const parseWordLocations = (location: string): Coordinates[] => {
+  return location.split(',').reduce<Coordinates[]>((list, current, index) => {
+    if (index % 2 === 0) {
+      const p = { x: parseInt(current), y: -1 };
+      list.push(p);
+    } else {
+      const last = list[list.length - 1];
+      last.y = parseInt(current);
+    }
+
+    return list;
+  }, []);
+};
+
 export const coordinatesToIndex = ({ x, y }: Coordinates): number => x * 8 + y;
 
 const distance = (start: Coordinates, end: Coordinates): number[] => {
