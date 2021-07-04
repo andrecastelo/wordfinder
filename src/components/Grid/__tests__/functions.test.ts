@@ -1,4 +1,12 @@
-import { coordinatesToIndex, getLine, indexToCoordinates, parseWordLocations } from '../functions';
+import {
+  checkEqual,
+  getSequenceMatch,
+  coordinatesToIndex,
+  getLine,
+  indexToCoordinates,
+  parseWordLocations,
+} from '../functions';
+import { TargetWord } from '../../../types';
 
 const p = (x: number, y: number) => ({ x, y });
 
@@ -110,3 +118,62 @@ describe('can properly parse a location string', () => {
 
   expect(parseWordLocations(locationString)).toEqual(expected);
 });
+
+describe('checks that two arrays of coordinates have the same elements', () => {
+  it('fails with incompatible lengths', () => {
+    expect(checkEqual(
+      [p(0,0), p(1,1)],
+      [p(0,0)]
+    )).toBe(false);
+  })
+
+  it('works with same length', () => {
+    expect(checkEqual(
+      [p(0,0), p(1,1)],
+      [p(0,0), p(1,1)],
+    )).toBe(true);
+
+    expect(checkEqual(
+      [p(0,0), p(1,1)],
+      [p(1,1), p(0,0)],
+    )).toBe(true);
+
+    expect(checkEqual(
+      [p(0,0), p(1,1)],
+      [p(1,1), p(1,1)],
+    )).toBe(false);
+  })
+})
+
+describe('can properly check a sequence against a target', () => {
+  it('fails when not finding a proper length match', () => {
+    const sequence = [p(0,0), p(1,1), p(2,2)];
+    const target: TargetWord[] = [
+      { word: 'code', location: [p(0,0), p(1,1), p(2,2), p(3,3)] },
+      { word: 'order', location: [p(1,1), p(2,1), p(3,1), p(4,1), p(5,1)] }
+    ];
+
+    expect(getSequenceMatch(sequence, target)).toEqual(null);
+  });
+
+  it('works fine with one match of the same length', () => {
+    const sequence = [p(0,0), p(1,1), p(2,2)];
+    const target: TargetWord[] = [
+      { word: 'order', location: [p(1,1), p(2,1), p(3,1), p(4,1), p(5,1)] },
+      { word: 'cod', location: [p(0,0), p(1,1), p(2,2)] },
+    ];
+
+    expect(getSequenceMatch(sequence, target)).toEqual(target[1]);
+  });
+
+  it('works fine with more than one match of the same length', () => {
+    const sequence = [p(0,0), p(1,1), p(2,2)];
+    const target: TargetWord[] = [
+      { word: 'oak', location: [p(1,1), p(2,1), p(3,1)] },
+      { word: 'cod', location: [p(0,0), p(1,1), p(2,2)] },
+      { word: 'den', location: [p(2,2), p(2,3), p(2,4)] },
+    ];
+
+    expect(getSequenceMatch(sequence, target)).toEqual(target[1]);
+  });
+})
