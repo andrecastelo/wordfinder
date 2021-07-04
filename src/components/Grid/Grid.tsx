@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import { GridItem } from './GridItem';
 import { StyledGrid } from './styles';
 import { Word } from './Word';
-import { indexToCoordinates, getLine } from './functions';
+import {
+  getLine,
+  indexToCoordinates,
+  getSequenceMatch,
+} from './functions';
 import { Coordinates, TargetWord } from '../../types';
 
 type GridProps = {
@@ -33,10 +37,20 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
   }
 
   useEffect(() => {
-    if (!dragging) {
+    const handleOnDragStop = () => {
       setStart(null);
+
+      const sequenceMatch: TargetWord | null = getSequenceMatch(selected, targetWords);
+
+      if (!sequenceMatch) {
+        setSelected([]);
+      }
     }
-  }, [dragging]);
+
+    if (!dragging && selected.length > 0) {
+      handleOnDragStop();
+    }
+  }, [dragging, selected, targetWords]);
 
   return (
     <div>
