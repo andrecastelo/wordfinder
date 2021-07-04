@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import { StyledGridItem } from './styles';
-import { Coordinates } from './functions';
+import { Coordinates } from '../../types';
 
 type GridItemProps = {
   dragging: boolean,
