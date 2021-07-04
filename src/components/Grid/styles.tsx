@@ -7,7 +7,7 @@ const Sizes = {
   Font: 24,
 };
 
-const maxWidth = (gridSize: number) => (Sizes.Item * gridSize) + (Sizes.Margin * (gridSize - 1));
+export const maxWidth = (gridSize: number) => (Sizes.Item * gridSize) + (Sizes.Margin * (gridSize - 1));
 
 type StyledGridProps = {
   size: number;

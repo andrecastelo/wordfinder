@@ -33,12 +33,10 @@ export const GridItem: React.FC<GridItemProps> = ({
         onSelect(coordinates);
       }
     }}
-    onMouseLeave={() => {
-
-    }}
     className={classnames(
       'tw-rounded',
       'tw-bg-gray-200',
+      'tw-transition',
       { 'tw-bg-blue-300': selected, 'tw-bg-blue-200': highlighted && !selected },
     )}
   >
