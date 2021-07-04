@@ -2,26 +2,23 @@ import { useState, useEffect } from 'react';
 import { GridItem } from './GridItem';
 import { StyledGrid } from './styles';
 import { Word } from './Word';
-import { indexToCoordinates, getLine, Coordinates } from './functions';
+import { indexToCoordinates, getLine } from './functions';
+import { Coordinates, TargetWord } from '../../types';
 
 type GridProps = {
   characters: string[],
-  targetWords: string[],
-  targetLocations: Coordinates[][],
+  targetWords: TargetWord[],
   targetLanguage: string,
-  words: string[],
 };
 
-export const Grid: React.FC<GridProps> = ({ characters, words }) => {
+export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [start, setStart] = useState<Coordinates | null>(null);
   const [selected, setSelected] = useState<Coordinates[]>([]);
 
-  useEffect(() => {
-    if (!dragging) {
-      setStart(null);
-    }
-  }, [dragging]);
+  const words = targetWords.map(target => target.word);
+
+  const clearSelected = () => setSelected([]);
 
   const isCoordinateSelected = (c: Coordinates) =>
     selected.some(({ x, y }) => x === c.x && y === c.y);
@@ -35,13 +32,19 @@ export const Grid: React.FC<GridProps> = ({ characters, words }) => {
     }
   }
 
+  useEffect(() => {
+    if (!dragging) {
+      setStart(null);
+    }
+  }, [dragging]);
+
   return (
     <div>
       <p>
         You need to find the <span>spanish</span> translation for the following words:
       </p>
       <p className="tw-my-2">{words.map(word => <Word key={word} value={word} found={false}/>)}</p>
-      <StyledGrid>
+      <StyledGrid onMouseLeave={() => setDragging(false)}>
         {characters.map((letter, index) => {
           const coordinates = indexToCoordinates(index);
 
