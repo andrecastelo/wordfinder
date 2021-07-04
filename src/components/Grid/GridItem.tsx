@@ -8,6 +8,7 @@ type GridItemProps = {
   coordinates: Coordinates,
   onSelect: (c: Coordinates) => void,
   selected: boolean,
+  highlighted: boolean,
 }
 
 export const GridItem: React.FC<GridItemProps> = ({
@@ -17,31 +18,30 @@ export const GridItem: React.FC<GridItemProps> = ({
   children,
   onSelect,
   selected,
-}) => {
-  return (
-    <StyledGridItem
-      onMouseDown={() => {
-        setDragging(true);
+  highlighted,
+}) => (
+  <StyledGridItem
+    onMouseDown={() => {
+      setDragging(true);
+      onSelect(coordinates);
+    }}
+    onMouseUp={() => {
+      setDragging(false);
+    }}
+    onMouseEnter={() => {
+      if (dragging) {
         onSelect(coordinates);
-      }}
-      onMouseUp={() => {
-        setDragging(false);
-      }}
-      onMouseEnter={() => {
-        if (dragging) {
-          onSelect(coordinates);
-        }
-      }}
-      onMouseLeave={() => {
+      }
+    }}
+    onMouseLeave={() => {
 
-      }}
-      className={classnames(
-        'tw-rounded',
-        'tw-bg-gray-200',
-        { 'tw-bg-blue-300': selected }
-      )}
-    >
-      {children}
-    </StyledGridItem>
-  )
-};
+    }}
+    className={classnames(
+      'tw-rounded',
+      'tw-bg-gray-200',
+      { 'tw-bg-blue-300': selected, 'tw-bg-blue-200': highlighted && !selected },
+    )}
+  >
+    {children}
+  </StyledGridItem>
+);
