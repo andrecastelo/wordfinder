@@ -37,7 +37,11 @@ export const GridItem: React.FC<GridItemProps> = ({
       'tw-rounded',
       'tw-bg-gray-200',
       'tw-transition',
-      { 'tw-bg-blue-300': selected, 'tw-bg-blue-200': highlighted && !selected },
+      'tw-text-gray-700',
+      {
+        'tw-bg-blue-300': selected,
+        'tw-bg-blue-200': highlighted && !selected,
+      },
     )}
   >
     {children}
