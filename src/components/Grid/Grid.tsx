@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { GridItem } from './GridItem';
-import { StyledGrid } from './styles';
+import { StyledGrid, GridContainer } from './styles';
 import { Word } from './Word';
 import {
   getLine,
@@ -67,15 +67,7 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }
   }, [dragging, selected, targetWords, foundWords, highlighted, onSuccess]);
 
   return (
-    <div>
-      <p>
-        You need to find the <span>spanish</span> translation for the following words:
-      </p>
-      <p className="tw-my-2">
-        {words.map(word =>
-          <Word key={word} value={word} found={foundWords.includes(word)}/>
-        )}
-      </p>
+    <GridContainer size={gridSize}>
       <StyledGrid onMouseLeave={() => setDragging(false)} size={gridSize}>
         {characters.flat().map((letter, index) => {
           const coordinates = indexToCoordinates(index, gridSize);
@@ -95,6 +87,12 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }
           )
         })}
       </StyledGrid>
-    </div>
+
+      <p className="tw-my-8">
+        {words.map(word =>
+          <Word key={word} value={word} found={foundWords.includes(word)}/>
+        )}
+      </p>
+    </GridContainer>
   );
 };

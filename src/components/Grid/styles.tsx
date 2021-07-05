@@ -7,19 +7,22 @@ const Sizes = {
   Font: 24,
 };
 
-export const maxWidth = (gridSize: number) => (Sizes.Item * gridSize) + (Sizes.Margin * (gridSize - 1));
+export const maxWidth = (gridSize: number): number => (Sizes.Item * gridSize) + (Sizes.Margin * (gridSize - 1));
 
 type StyledGridProps = {
   size: number;
 }
 
+export const GridContainer = styled.div<StyledGridProps>`
+  max-width: ${props => maxWidth(props.size)}px;
+  margin: 0 auto;
+`;
+
 export const StyledGrid = styled.div<StyledGridProps>`
   display: grid;
-  margin: 0 auto;
   grid-template-columns: ${props => `repeat(${props.size}, ${Sizes.Item}px)`};
   grid-template-rows: ${props => `repeat(${props.size}, ${Sizes.Item}px)`};
   grid-gap: ${Sizes.Margin}px;
-  max-width: ${props => maxWidth(props.size)}px;
   user-select: none;
 `;
 
