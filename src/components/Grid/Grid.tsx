@@ -6,7 +6,7 @@ import {
   getLine,
   indexToCoordinates,
   getSequenceMatch,
-} from './functions';
+} from '../../functions';
 import { Coordinates, TargetWord } from '../../types';
 
 type GridProps = {

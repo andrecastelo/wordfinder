@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Grid } from './components';
-import { parseWordLocations } from './components/Grid/functions';
+import { parseWordLocations } from './functions';
 import { TargetWord, WordLocationsArray } from './types';
 import data from './data.json';
 

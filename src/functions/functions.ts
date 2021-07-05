@@ -1,4 +1,4 @@
-import { Coordinates, TargetWord } from '../../types';
+import { Coordinates, TargetWord } from '../types';
 
 /**
  * We flatten the characters array to build it within our CSS grid
