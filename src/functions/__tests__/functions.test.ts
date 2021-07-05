@@ -6,7 +6,7 @@ import {
   indexToCoordinates,
   parseWordLocations,
 } from '../functions';
-import { TargetWord } from '../../../types';
+import { TargetWord } from '../../types';
 
 const p = (x: number, y: number) => ({ x, y });
 
