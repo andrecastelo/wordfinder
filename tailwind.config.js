@@ -9,4 +9,7 @@ module.exports = {
   },
   plugins: [],
   prefix: 'tw-',
+  fontFamily: {
+    sans: ['Roboto', 'sans-serif'],
+  }
 }
