@@ -22,8 +22,7 @@ export const Challenge: React.FC<ChallengeProps> = ({ onSuccess, data }) => {
   });
 
   return (
-    <div className="tw-m-auto md:tw-max-w-4xl tw-p-8 tw-m-8">
-      <h1 className="tw-my-8">Word finder</h1>
+    <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
       <Grid
         characters={characters}
         targetWords={targetWords}
