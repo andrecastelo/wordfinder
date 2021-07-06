@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { GridItem } from './GridItem';
 import { StyledGrid, GridContainer } from './styles';
 import { Word } from './Word';
@@ -7,6 +7,7 @@ import {
   indexToCoordinates,
   getSequenceMatch,
 } from '../../functions';
+import { SuccessContext } from '../../context';
 import { Coordinates, TargetWord } from '../../types';
 
 const Emphasis: React.FC = ({ children }) => (
@@ -15,31 +16,22 @@ const Emphasis: React.FC = ({ children }) => (
   </span>
 );
 
-const randomCongrats = () => {
-  const congrats = [
-    'Well done!',
-    'Great job!',
-    'Awesome!',
-    'You are very good at this!',
-    'Practically a native speaker at this point!'
-  ];
-
-  return congrats[Math.floor(Math.random() * congrats.length)];
-}
+const TIME_BETWEEN_CHALLENGES = 1.5 * 1000;
 
 type GridProps = {
   characters: string[][],
   targetWords: TargetWord[],
   targetLanguage: string,
-  onSuccess: () => void,
 };
 
-export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }) => {
+export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [start, setStart] = useState<Coordinates | null>(null);
   const [selected, setSelected] = useState<Coordinates[]>([]);
   const [highlighted, setHighlighted] = useState<Coordinates[]>([]);
   const [foundWords, setFoundWords] = useState<string[]>([]);
+
+  const { nextChallenge, showCongrats } = useContext(SuccessContext);
 
   const gridSize = characters[0].length;
 
@@ -70,11 +62,12 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }
         setHighlighted(highlighted.concat(sequenceMatch.location));
 
         if (totalWordsFound.length === targetWords.length) {
+          showCongrats();
           setTimeout(() => {
             setFoundWords([]);
             setHighlighted([]);
-            onSuccess();
-          }, 1000)
+            nextChallenge();
+          }, TIME_BETWEEN_CHALLENGES);
         }
       }
 
@@ -84,7 +77,7 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }
     if (!dragging && selected.length > 0) {
       handleOnDragStop();
     }
-  }, [dragging, selected, targetWords, foundWords, highlighted, onSuccess]);
+  }, [dragging, selected, targetWords, foundWords, highlighted, showCongrats, nextChallenge]);
 
   return (
     <GridContainer size={gridSize}>
@@ -111,19 +104,17 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }
       <p className="tw-mt-8">
         Find the <Emphasis>spanish</Emphasis> translations for the word below.
       </p>
-          <p className="tw-mt-4">
-            There {wordsLeft === 1 ? 'is' : 'are'}
-            <Emphasis>{wordsLeft}</Emphasis>
-            {wordsLeft === 1 ? 'word' : 'words'} left.
-          </p>
-        <p className="tw-mt-4">
-          {randomCongrats()}
-        </p>
       <p className="tw-my-8">
         {sourceWords.map(word =>
           <Word key={word} value={word} found={foundWords.includes(word)}/>
         )}
       </p>
+      <p className="tw-mt-4">
+        There {wordsLeft === 1 ? 'is' : 'are'}
+        <Emphasis>{wordsLeft}</Emphasis>
+        {wordsLeft === 1 ? 'translation' : 'translations'} left.
+      </p>
+
     </GridContainer>
   );
 };

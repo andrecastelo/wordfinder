@@ -4,11 +4,10 @@ import { parseWordLocations } from '../../functions';
 import { TargetWord, WordLocationsArray, ChallengeData } from '../../types';
 
 type ChallengeProps = {
-  onSuccess: () => void,
   data: ChallengeData,
 }
 
-export const Challenge: React.FC<ChallengeProps> = ({ onSuccess, data }) => {
+export const Challenge: React.FC<ChallengeProps> = ({ data }) => {
   const characters = data.character_grid;
   const wordLocations: WordLocationsArray = Object.entries(
     data.word_locations
@@ -29,7 +28,6 @@ export const Challenge: React.FC<ChallengeProps> = ({ onSuccess, data }) => {
         characters={characters}
         targetWords={targetWords}
         targetLanguage={data.target_language}
-        onSuccess={onSuccess}
       />
     </div>
   );
