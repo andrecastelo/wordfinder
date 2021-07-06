@@ -56,7 +56,7 @@ export const Congratulations: React.FC<CongratulationsProps> = ({ visible = fals
     <Wrapper visible={visible}>
       <WhiteBackground visible={visible} />
 
-      <div css={{ position: 'relative', zIndex: 9 }}>
+      <div className="tw-relative tw-z-10">
         {children || (
           <CongratsText visible={visible}>
             {randomCongrats()}
