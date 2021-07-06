@@ -13,10 +13,12 @@ export const Challenge: React.FC<ChallengeProps> = ({ onSuccess, data }) => {
   const wordLocations: WordLocationsArray = Object.entries(
     data.word_locations
   );
+  const source = data.word;
 
   const targetWords: TargetWord[] = wordLocations.map(([location, word]) => {
     return {
       word,
+      source,
       location: parseWordLocations(location),
     }
   });

@@ -7,6 +7,7 @@ export type WordLocationsArray = [string, string][];
 
 export type TargetWord = {
   word: string,
+  source: string,
   location: Coordinates[],
 };
 

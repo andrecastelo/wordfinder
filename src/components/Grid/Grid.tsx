@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GridItem } from './GridItem';
 import { StyledGrid, GridContainer } from './styles';
 import { Word } from './Word';
@@ -8,6 +8,24 @@ import {
   getSequenceMatch,
 } from '../../functions';
 import { Coordinates, TargetWord } from '../../types';
+
+const Emphasis: React.FC = ({ children }) => (
+  <span className="tw-inline-block tw-p-2 tw-mx-1 tw-font-bold tw-rounded tw-bg-gray-100">
+    {children}
+  </span>
+);
+
+const randomCongrats = () => {
+  const congrats = [
+    'Well done!',
+    'Great job!',
+    'Awesome!',
+    'You are very good at this!',
+    'Practically a native speaker at this point!'
+  ];
+
+  return congrats[Math.floor(Math.random() * congrats.length)];
+}
 
 type GridProps = {
   characters: string[][],
@@ -23,7 +41,6 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }
   const [highlighted, setHighlighted] = useState<Coordinates[]>([]);
   const [foundWords, setFoundWords] = useState<string[]>([]);
 
-  const words = targetWords.map(target => target.word);
   const gridSize = characters[0].length;
 
   const hasCoordinate = (c: Coordinates, seq: Coordinates[]) =>
@@ -37,6 +54,9 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }
       setSelected(getLine(start, coordinates));
     }
   }
+
+  const sourceWords: string[] = Array.from(new Set(targetWords.map(({ source }) => source)));
+  const wordsLeft: number = targetWords.length - foundWords.length;
 
   useEffect(() => {
     const handleOnDragStop = () => {
@@ -88,8 +108,19 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords, onSuccess }
         })}
       </StyledGrid>
 
+      <p className="tw-mt-8">
+        Find the <Emphasis>spanish</Emphasis> translations for the word below.
+      </p>
+          <p className="tw-mt-4">
+            There {wordsLeft === 1 ? 'is' : 'are'}
+            <Emphasis>{wordsLeft}</Emphasis>
+            {wordsLeft === 1 ? 'word' : 'words'} left.
+          </p>
+        <p className="tw-mt-4">
+          {randomCongrats()}
+        </p>
       <p className="tw-my-8">
-        {words.map(word =>
+        {sourceWords.map(word =>
           <Word key={word} value={word} found={foundWords.includes(word)}/>
         )}
       </p>
