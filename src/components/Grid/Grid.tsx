@@ -102,7 +102,8 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
       </StyledGrid>
 
       <p className="tw-mt-8">
-        Find the <Emphasis>spanish</Emphasis> translations for the word below.
+        Find the <Emphasis>spanish</Emphasis> translations for the word below. Click and drag to
+        select a word.
       </p>
       <p className="tw-my-8">
         {sourceWords.map(word =>
