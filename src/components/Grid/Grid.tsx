@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, PropsWithChildren } from 'react';
 import { GridItem } from './GridItem';
 import { StyledGrid, GridContainer } from './styles';
 import { Word } from './Word';
@@ -10,7 +10,7 @@ import {
 import { SuccessContext } from '../../context';
 import { Coordinates, TargetWord } from '../../types';
 
-const Emphasis: React.FC = ({ children }) => (
+const Emphasis = ({ children }: PropsWithChildren) => (
   <span className="tw-inline-block tw-p-2 tw-mx-1 tw-font-bold tw-rounded tw-bg-gray-100">
     {children}
   </span>
@@ -24,7 +24,7 @@ type GridProps = {
   targetLanguage: string,
 };
 
-export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
+export const Grid = ({ characters, targetWords }: GridProps) => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [start, setStart] = useState<Coordinates | null>(null);
   const [selected, setSelected] = useState<Coordinates[]>([]);
@@ -41,7 +41,7 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
   const handleOnSelect = (coordinates: Coordinates): void => {
     if (!start) {
       setStart(coordinates);
-      setSelected([ coordinates ]);
+      setSelected([coordinates]);
     } else {
       setSelected(getLine(start, coordinates));
     }
@@ -57,7 +57,7 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
       const sequenceMatch: TargetWord | null = getSequenceMatch(selected, targetWords);
 
       if (sequenceMatch) {
-        const totalWordsFound = [ ...foundWords, sequenceMatch.word];
+        const totalWordsFound = [...foundWords, sequenceMatch.word];
         setFoundWords(totalWordsFound);
         setHighlighted(highlighted.concat(sequenceMatch.location));
 
@@ -107,7 +107,7 @@ export const Grid: React.FC<GridProps> = ({ characters, targetWords }) => {
       </p>
       <p className="tw-my-8">
         {sourceWords.map(word =>
-          <Word key={word} value={word} found={foundWords.includes(word)}/>
+          <Word key={word} value={word} found={foundWords.includes(word)} />
         )}
       </p>
       <p className="tw-mt-4">

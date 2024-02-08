@@ -1,11 +1,8 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 import styled from '@emotion/styled';
 
-type CongratulationsProps = {
-  visible?: boolean;
-}
 
-const Wrapper = styled.div<CongratulationsProps>`
+const Wrapper = styled.div<{ visible: boolean }>`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -18,7 +15,7 @@ const Wrapper = styled.div<CongratulationsProps>`
   z-index: ${({ visible }) => visible ? 9 : -1};
 `;
 
-const WhiteBackground = styled.div<CongratulationsProps>`
+const WhiteBackground = styled.div<{ visible: boolean }>`
   position: absolute;
   top: 0;
   bottom: 0;
@@ -31,7 +28,7 @@ const WhiteBackground = styled.div<CongratulationsProps>`
   opacity: ${({ visible }) => visible ? 1 : 0};
 `;
 
-const CongratsText = styled.p<CongratulationsProps>`
+const CongratsText = styled.p<{ visible: boolean }>`
   color: black;
   font-size: 48px;
   font-weight: bold;
@@ -41,7 +38,11 @@ const CongratsText = styled.p<CongratulationsProps>`
   transition: opacity 0.2s linear;
 `;
 
-export const Congratulations: React.FC<CongratulationsProps> = ({ visible = false, children }) => {
+type CongratulationsProps = PropsWithChildren<{
+  visible?: boolean;
+}>
+
+export const Congratulations = ({ visible = false, children }: CongratulationsProps) => {
   const randomCongrats = () => {
     const congrats = [
       'Well done!',

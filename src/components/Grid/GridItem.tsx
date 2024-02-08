@@ -1,17 +1,18 @@
 import classnames from 'classnames';
 import { StyledGridItem } from './styles';
 import { Coordinates } from '../../types';
+import { PropsWithChildren } from 'react';
 
-type GridItemProps = {
+type GridItemProps = PropsWithChildren<{
   dragging: boolean,
   setDragging: React.Dispatch<React.SetStateAction<boolean>>,
   coordinates: Coordinates,
   onSelect: (c: Coordinates) => void,
   selected: boolean,
   highlighted: boolean,
-}
+}>
 
-export const GridItem: React.FC<GridItemProps> = ({
+export const GridItem = ({
   dragging = false,
   setDragging,
   coordinates,
@@ -19,7 +20,7 @@ export const GridItem: React.FC<GridItemProps> = ({
   onSelect,
   selected,
   highlighted,
-}) => (
+}: GridItemProps) => (
   <StyledGridItem
     onMouseDown={() => {
       setDragging(true);
