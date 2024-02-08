@@ -35,10 +35,10 @@ export const GridItem: React.FC<GridItemProps> = ({
     }}
     className={classnames(
       'tw-rounded',
-      'tw-bg-gray-200',
       'tw-transition',
       'tw-text-gray-700',
       {
+        'tw-bg-gray-200': !selected && !highlighted,
         'tw-bg-blue-300': selected,
         'tw-bg-blue-200': highlighted && !selected,
       },
