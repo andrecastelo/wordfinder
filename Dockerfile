@@ -8,7 +8,8 @@ COPY . .
 
 RUN npm i -g pnpm
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
-RUN pnpm run build
+RUN npm rebuild esbuild
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm run build
 
 FROM nginx:1.25.3-alpine
 COPY --from=builder /app/build /usr/share/nginx/html
