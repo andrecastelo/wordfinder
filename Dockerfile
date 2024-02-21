@@ -7,8 +7,9 @@ ENV PATH="$PNPM_HOME:$PATH"
 COPY . .
 
 RUN npm i -g pnpm
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
-RUN npm rebuild esbuild
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+# RUN npm rebuild esbuild
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm rebuild esbuild
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm run build
 
 FROM nginx:1.25.3-alpine
