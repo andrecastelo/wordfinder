@@ -3,18 +3,16 @@ WORKDIR /app
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-
 COPY . .
-
 RUN npm i -g pnpm
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-# RUN npm rebuild esbuild
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm rebuild esbuild
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm run build
+RUN pnpm install --frozen-lockfile \
+ && pnpm rebuild esbuild \
+ && pnpm run build \
+ && rm -rf node_modules
 
-FROM nginx:1.25.3-alpine
+FROM nginx:1.25.3-alpine AS final
 COPY --from=builder /app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
-COPY deploy/nginx/nginx.conf /etc/nginx/conf.d
-EXPOSE 80
+COPY deploy/nginx/default.conf /etc/nginx/conf.d/default.conf
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
